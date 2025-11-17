@@ -12,6 +12,8 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState>{
   PropertyBloc({required this.propertyRepo}): super(PropertyInitial()){
     on<PreferenceSubmitEvent>(_onPreferenceSubmitEvent);
     on<LoadPropertyEvent>(_onPropertyLoadEvent);
+    on<BookingCreateEvent>(_onBookingCreateEvent);
+    on<LoadBookingsEvent>(_onBookingsLoadEvent);
   }
 
 
@@ -33,6 +35,28 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState>{
     try{
       final response = await propertyRepo.getUserPropertiesFunc();
       emit(PropertiesLoaded(properties: response?.$1, message: response?.$2));
+    }catch(e){
+      emit(PropertyError(error: e.toString()));
+    }
+  }
+
+  //create booking
+  Future<void> _onBookingCreateEvent(BookingCreateEvent event, Emitter<PropertyState> emit) async{
+    emit(PropertyLoading());
+    try{
+      final response = await propertyRepo.createBookingFunction(event.reqObject);
+      emit(BookingCreated(message: response!));
+    }catch(e){
+      emit(PropertyError(error: e.toString()));
+    }
+  }
+
+  //load bookings
+  Future<void> _onBookingsLoadEvent(LoadBookingsEvent event, Emitter<PropertyState> emit) async{
+    emit(PropertyLoading());
+    try{
+      final response = await propertyRepo.getBookingsFunction();
+      emit(BookingsLoaded(bookings: response?.$1, message: response?.$2));
     }catch(e){
       emit(PropertyError(error: e.toString()));
     }

@@ -27,4 +27,8 @@ class SecureStorageStrings{
     String? userId = await storageInstance.read(key: idKey);
     return userId;
   }
+
+  clearAll() async{
+    await storageInstance.deleteAll();
+  }
 }

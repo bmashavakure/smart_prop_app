@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:smart_prop_app/data/models/response_objects/get_bookings_response.dart';
 import 'package:smart_prop_app/data/models/response_objects/property_response.dart';
 
 
@@ -39,6 +40,35 @@ class PropertyError extends PropertyState{
   final String error;
 
   PropertyError({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
+class BookingCreated extends PropertyState{
+  final String message;
+
+  BookingCreated({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class BookingsLoaded extends PropertyState{
+  final List<Booking>? bookings;
+  final String? message;
+
+  BookingsLoaded({required this.bookings, this.message});
+
+  @override
+  List<Object?> get props => [bookings, message];
+}
+
+
+class BookingError extends PropertyState{
+  final String error;
+
+  BookingError({required this.error});
 
   @override
   List<Object?> get props => [error];

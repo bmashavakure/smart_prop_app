@@ -39,7 +39,7 @@ class _LoginState extends State<Login>{
         listener: (context, state){
           if(state is AuthAuthenticated){
             SnackBarHelper.showSuccessSnackBar(state.message);
-            Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomePage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HomePage()));
           }else if(state is AuthError){
             SnackBarHelper.showErrorSnackBar(state.error);
           }
@@ -53,14 +53,32 @@ class _LoginState extends State<Login>{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Center(
-                      child: Text(
-                        'Welcome Back',
-                        style: TextStyle(
-                          fontSize: 25,
+                    Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            'Welcome Back To SmartProp',
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
                         ),
-                      ),
+
+                        SizedBox(height: 5,),
+
+                        Center(
+                          child: Text(
+                            'Login To Get Started',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
+                    SizedBox(height: 20,),
 
                     Column(
                       children: [
@@ -129,6 +147,8 @@ class _LoginState extends State<Login>{
 
                       ],
                     ),
+
+                    SizedBox(height: 20,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

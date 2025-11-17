@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_prop_app/core/utils/snackbar_helper.dart';
 import 'package:smart_prop_app/logic/blocs/auth_bloc/auth_bloc.dart';
 import 'package:smart_prop_app/logic/blocs/auth_bloc/auth_state.dart';
+import 'package:smart_prop_app/ui/property/preferences.dart';
 
 import 'login.dart';
 
@@ -59,7 +60,7 @@ class _RegisterState extends State<Register>{
         listener: (context, state){
           if(state is AuthAuthenticated){
             SnackBarHelper.showSuccessSnackBar(state.message);
-            Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomePage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => Preference()));
           }else if(state is AuthError){
             SnackBarHelper.showErrorSnackBar(state.error);
           }else{
@@ -99,6 +100,9 @@ class _RegisterState extends State<Register>{
                         ),
                       ],
                     ),
+
+
+                    SizedBox(height: 20,),
 
                     Column(
                       children: [
@@ -217,6 +221,8 @@ class _RegisterState extends State<Register>{
                         ),
                       ],
                     ),
+
+                    SizedBox(height: 10,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

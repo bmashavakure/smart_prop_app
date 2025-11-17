@@ -1,3 +1,5 @@
+import 'package:smart_prop_app/data/models/booking_model.dart';
+import 'package:smart_prop_app/data/models/response_objects/get_bookings_response.dart';
 import 'package:smart_prop_app/data/provider/property_provider.dart';
 import 'package:smart_prop_app/core/utils/secure_storage_string.dart';
 import 'package:smart_prop_app/data/models/preference_model.dart';
@@ -40,4 +42,39 @@ class PropertyRepository{
       return (null, e.toString());
     }
   }
+
+  //create booking
+  Future<String?> createBookingFunction(BookingModel reqObject) async{
+    try{
+      String token = await secureStorageInstance.readAuthToken();
+      final response = await propertyProvider.createBookingApiCall(reqObject, token);
+      if(response.status == "success"){
+        return response.message;
+      }else{
+        return response.message;
+      }
+    }catch(e){
+      return "Failed to book";
+    }
+  }
+
+
+  //get bookings
+  Future<(List<Booking>?, String?)?> getBookingsFunction() async{
+    try{
+      List<Booking>? bookings = [];
+      String token = await secureStorageInstance.readAuthToken();
+      String userID = await secureStorageInstance.readUserId();
+      final response = await propertyProvider.getBookingsApiCall(int.tryParse(userID) ?? 1, token);
+      if(response.status == "success"){
+        bookings = response.data?.bookings;
+        return (bookings, response.message);
+      }else{
+        return (bookings, response.message);
+      }
+    }catch(e){
+      return (null, e.toString());
+    }
+  }
+
 }

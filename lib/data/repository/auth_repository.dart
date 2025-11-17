@@ -13,7 +13,7 @@ class AuthRepository{
         await secureStorageInstance.saveAuthToken(response.data?.token ?? "");
         await secureStorageInstance.saveUserId(response.data?.userId.toString() ?? "");
 
-        return response.message;
+        return response. message;
       }else{
         throw Exception(response.message ?? "Registration failed");
       }
@@ -41,5 +41,13 @@ class AuthRepository{
     }
   }
 
+  //logout user
+  Future<void> logoutUser() async{
+    try{
+      await secureStorageInstance.clearAll();
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
 
 }
