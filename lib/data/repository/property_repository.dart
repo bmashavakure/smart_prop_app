@@ -77,4 +77,21 @@ class PropertyRepository{
     }
   }
 
+
+  //cancel booking
+  Future<String?> cancelBookingFunction(int bookingID) async{
+    try{
+      String token = await secureStorageInstance.readAuthToken();
+      final response = await propertyProvider.cancelBookingApiCall(bookingID, token);
+      if(response.status == "success"){
+        return response.message;
+      }else{
+        return response.message;
+      }
+    }catch(e){
+      return "Failed to book";
+    }
+  }
+
+
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_prop_app/ui/home.dart';
 import 'package:smart_prop_app/ui/profile.dart';
+import 'package:smart_prop_app/ui/property/bookings.dart';
 
 
 class NavBar extends StatefulWidget{
@@ -24,6 +25,7 @@ class _NavBarState extends State<NavBar>{
       type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(icon: Icon(selectedIndex == 0  ? Icons.home : Icons.home_rounded, ), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(selectedIndex == 1  ? Icons.event_available : Icons.event, ), label: 'Bookings'),
         BottomNavigationBarItem(icon: Icon(selectedIndex == 2  ? Icons.person_rounded : Icons.person, ), label: 'Profile'),
       ],
       onTap: (int index) async{
@@ -36,6 +38,9 @@ class _NavBarState extends State<NavBar>{
             Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()),);
             break;
           case 1:
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BookingsPage()),);
+            break;
+          case 2:
             Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()),);
             break;
         }

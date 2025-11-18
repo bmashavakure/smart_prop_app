@@ -34,3 +34,13 @@ class BookingCreateEvent extends PropertyEvent{
   @override
   List<Object?> get props => [reqObject];
 }
+
+
+class BookingCancelEvent extends PropertyEvent{
+  final int bookingID;
+
+  const BookingCancelEvent({required this.bookingID});
+
+  @override
+  List<Object?> get props => [bookingID];
+}

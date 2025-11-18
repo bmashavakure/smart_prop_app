@@ -14,6 +14,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState>{
     on<LoadPropertyEvent>(_onPropertyLoadEvent);
     on<BookingCreateEvent>(_onBookingCreateEvent);
     on<LoadBookingsEvent>(_onBookingsLoadEvent);
+    on<BookingCancelEvent>(_onBookingCancelEvent);
   }
 
 
@@ -57,6 +58,16 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState>{
     try{
       final response = await propertyRepo.getBookingsFunction();
       emit(BookingsLoaded(bookings: response?.$1, message: response?.$2));
+    }catch(e){
+      emit(PropertyError(error: e.toString()));
+    }
+  }
+
+  Future<void> _onBookingCancelEvent(BookingCancelEvent event, Emitter<PropertyState> emit) async{
+    emit(PropertyLoading());
+    try{
+      final response = await propertyRepo.cancelBookingFunction(event.bookingID);
+      emit(BookingCanceled(message: response!));
     }catch(e){
       emit(PropertyError(error: e.toString()));
     }

@@ -9,6 +9,8 @@ import 'package:smart_prop_app/data/models/response_objects/property_response.da
 import 'package:smart_prop_app/logic/blocs/property_bloc/property_bloc.dart';
 import 'package:smart_prop_app/logic/blocs/property_bloc/property_event.dart';
 import 'package:smart_prop_app/logic/blocs/property_bloc/property_state.dart';
+import 'package:smart_prop_app/core/theme/app_theme.dart';
+import 'package:smart_prop_app/ui/property/bookings.dart';
 
 
 class PropertyWidget extends StatefulWidget {
@@ -52,7 +54,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Booking Date
                   ListTile(
                     title: Text('Booking Date'),
                     subtitle: Text(
@@ -76,7 +77,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                     },
                   ),
                   
-                  // Booking Time
                   ListTile(
                     title: Text('Booking Time'),
                     subtitle: Text(
@@ -100,7 +100,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                   Divider(),
 
-                  // Checkout Date
                   ListTile(
                     title: Text('Checkout Date'),
                     subtitle: Text(
@@ -124,7 +123,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                     },
                   ),
 
-                  // Checkout Time
                   ListTile(
                     title: Text('Checkout Time'),
                     subtitle: Text(
@@ -167,7 +165,7 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                   BookingModel bookingModel = BookingModel(
                     userID: userIdInt,
-                    propertyID: widget.prop.propertyId,
+                    propertyID: widget.prop.id,
                     bookingDate: DateFormat('yyyy-MM-dd').format(bookingDate!),
                     bookingTime:
                         '${bookingTime!.hour.toString().padLeft(2, '0')}:${bookingTime!.minute.toString().padLeft(2, '0')}',
@@ -189,12 +187,41 @@ class _PropertyWidgetState extends State<PropertyWidget> {
     );
   }
 
+  void _showSuccessDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green, size: 30),
+            SizedBox(width: 10),
+            Text('Booking Successful'),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const BookingsPage()),
+              );
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PropertyBloc, PropertyState>(
       listener: (context, state) {
         if (state is BookingCreated) {
-          SnackBarHelper.showSuccessSnackBar(state.message);
+          _showSuccessDialog(context, state.message);
         } else if (state is PropertyError) {
           SnackBarHelper.showErrorSnackBar(state.error);
         }
@@ -212,7 +239,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Property Image
                   ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(13),
@@ -254,7 +280,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Property Title
                         Text(
                           widget.prop.title ?? 'No Title',
                           style: TextStyle(
@@ -267,11 +292,9 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                         SizedBox(height: 8),
 
-                        // Price and Address Row
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Price
                             Row(
                               children: [
                                 Icon(Icons.attach_money, size: 18, color: Colors.green),
@@ -293,7 +316,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                               ],
                             ),
 
-                            // Address
                             Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -302,7 +324,7 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                                   SizedBox(width: 4),
                                   Flexible(
                                     child: Text(
-                                      widget.prop.city ?? 'Unknown',
+                                      widget.prop.address ?? 'Unknown',
                                       style: TextStyle(fontSize: 14),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -316,7 +338,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                         SizedBox(height: 8),
 
-                        // Property Details
                         Row(
                           children: [
                             Icon(Icons.bed, size: 16),
@@ -335,7 +356,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                         SizedBox(height: 12),
 
-                        // Amenities Dropdown
                         if (widget.prop.amenities != null && widget.prop.amenities!.isNotEmpty)
                           Container(
                             decoration: BoxDecoration(
@@ -383,7 +403,7 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                                       children: widget.prop.amenities!
                                           .map((amenity) => Chip(
                                                 label: Text(amenity),
-                                                backgroundColor: Colors.grey[200],
+                                                backgroundColor: AppTheme.surfaceDeep,
                                               ))
                                           .toList(),
                                     ),
@@ -394,7 +414,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
 
                         SizedBox(height: 12),
 
-                        // Book Button
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(

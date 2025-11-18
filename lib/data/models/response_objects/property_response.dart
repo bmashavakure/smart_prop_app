@@ -68,20 +68,19 @@ class Property {
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic deletedAt;
-  int? propertyId;
   String? title;
   String? description;
-  PropertyType? propertyType;
+  String? propertyType;
   String? address;
   String? city;
   int? price;
-  Currency? currency;
-  PricePeriod? pricePeriod;
+  String? currency;
+  String? pricePeriod;
   int? bedrooms;
   int? bathrooms;
-  double? areaSqft;
+  int? areaSqft;
   List<String>? amenities;
-  SourceWebsite? sourceWebsite;
+  String? sourceWebsite;
   String? sourceUrl;
   String? externalId;
   String? imageUrls;
@@ -94,7 +93,6 @@ class Property {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
-    this.propertyId,
     this.title,
     this.description,
     this.propertyType,
@@ -117,51 +115,29 @@ class Property {
   });
 
   factory Property.fromJson(Map<String, dynamic> json) => Property(
-    id: json["ID"],
-    createdAt: json["CreatedAt"] != null
-        ? DateTime.tryParse(json["CreatedAt"])
-        : null,
-    updatedAt: json["UpdatedAt"] != null
-        ? DateTime.tryParse(json["UpdatedAt"])
-        : null,
+    id: json["ID"] == null ? null : (json["ID"] is int ? json["ID"] : int.tryParse(json["ID"].toString())),
+    createdAt: json["CreatedAt"] == null ? null : DateTime.parse(json["CreatedAt"]),
+    updatedAt: json["UpdatedAt"] == null ? null : DateTime.parse(json["UpdatedAt"]),
     deletedAt: json["DeletedAt"],
-    propertyId: json["id"],
-    title: json["title"],
-    description: json["description"],
-    propertyType: json["property_type"] != null
-        ? propertyTypeValues.map[json["property_type"]]
-        : null,
+    title: json["title"] as String?,
+    description: json["description"] as String?,
+    propertyType: json["property_type"] as String?,
     address: json["address"] as String?,
     city: json["city"] as String?,
-    price: json["price"],
-    currency: json["currency"] != null
-        ? currencyValues.map[json["currency"]]
-        : null,
-    pricePeriod: json["price_period"] != null
-        ? pricePeriodValues.map[json["price_period"]]
-        : null,
-    bedrooms: json["bedrooms"],
-    bathrooms: json["bathrooms"],
-    areaSqft: (json["area_sqft"] as num?)?.toDouble(),
-    amenities: json["amenities"] == null
-        ? null
-        : List<String>.from(
-        json["amenities"].map((x) => x.toString())),
-    sourceWebsite: json["source_website"] != null
-        ? sourceWebsiteValues.map[json["source_website"]]
-        : null,
-    sourceUrl: json["source_url"],
-    externalId: json["external_id"],
-    imageUrls: json["image_urls"],
-    propertyCreatedAt: json["created_at"] != null
-        ? DateTime.tryParse(json["created_at"])
-        : null,
-    propertyUpdatedAt: json["updated_at"] != null
-        ? DateTime.tryParse(json["updated_at"])
-        : null,
-    lastScrapedAt: json["last_scraped_at"] != null
-        ? DateTime.tryParse(json["last_scraped_at"])
-        : null,
+    price: json["price"] == null ? null : (json["price"] is int ? json["price"] : int.tryParse(json["price"].toString())),
+    currency: json["currency"] as String?,
+    pricePeriod: json["price_period"] as String?,
+    bedrooms: json["bedrooms"] == null ? null : (json["bedrooms"] is int ? json["bedrooms"] : int.tryParse(json["bedrooms"].toString())),
+    bathrooms: json["bathrooms"] == null ? null : (json["bathrooms"] is int ? json["bathrooms"] : int.tryParse(json["bathrooms"].toString())),
+    areaSqft: json["area_sqft"] == null ? null : (json["area_sqft"] is int ? json["area_sqft"] : int.tryParse(json["area_sqft"].toString())),
+    amenities: json["amenities"] == null ? null : List<String>.from(json["amenities"].map((x) => x.toString())),
+    sourceWebsite: json["source_website"] as String?,
+    sourceUrl: json["source_url"] as String?,
+    externalId: json["external_id"] as String?,
+    imageUrls: json["image_urls"] as String?,
+    propertyCreatedAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    propertyUpdatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    lastScrapedAt: json["last_scraped_at"] == null ? null : DateTime.parse(json["last_scraped_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -169,32 +145,29 @@ class Property {
     "CreatedAt": createdAt?.toIso8601String(),
     "UpdatedAt": updatedAt?.toIso8601String(),
     "DeletedAt": deletedAt,
-    "id": propertyId,
     "title": title,
     "description": description,
-    "property_type": propertyTypeValues.reverse[propertyType],
+    "property_type": propertyType,
     "address": address,
     "city": city,
     "price": price,
-    "currency": currencyValues.reverse[currency],
-    "price_period": pricePeriodValues.reverse[pricePeriod],
+    "currency": currency,
+    "price_period": pricePeriod,
     "bedrooms": bedrooms,
     "bathrooms": bathrooms,
     "area_sqft": areaSqft,
-    "amenities": amenities,
-    "source_website":
-    sourceWebsiteValues.reverse[sourceWebsite],
+    "amenities": amenities == null ? null : List<dynamic>.from(amenities!.map((x) => x)),
+    "source_website": sourceWebsite,
     "source_url": sourceUrl,
     "external_id": externalId,
     "image_urls": imageUrls,
-    "created_at":
-    propertyCreatedAt?.toIso8601String(),
-    "updated_at":
-    propertyUpdatedAt?.toIso8601String(),
-    "last_scraped_at":
-    lastScrapedAt?.toIso8601String(),
+    "created_at": propertyCreatedAt?.toIso8601String(),
+    "updated_at": propertyUpdatedAt?.toIso8601String(),
+    "last_scraped_at": lastScrapedAt?.toIso8601String(),
   };
 }
+
+
 
 
 enum Currency { USD }

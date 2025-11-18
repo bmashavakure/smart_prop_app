@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: NavBar(),
       body: Column(
         children: [
-          // Search Bar
           Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
@@ -84,71 +83,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Properties List
           Expanded(
             child: BlocBuilder<PropertyBloc, PropertyState>(
               builder: (context, state) {
-                // Show loading indicator while properties are being fetched
-                if (state is PropertyLoading || (_allProperties == null && state is! PropertyError)) {
+                if (state is PropertiesLoaded) {
+                  _allProperties = state.properties;
+                  _filteredProperties = state.properties;
+                }
+
+                if (state is PropertyLoading && _allProperties == null) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is PropertiesLoaded) {
-                  // Update the properties list
-                  if (_allProperties != state.properties) {
-                    _allProperties = state.properties;
-                    _filteredProperties = state.properties;
-                  }
+                }
 
-                  // Show empty state if no properties
-                  if (_filteredProperties == null || _filteredProperties!.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.home_outlined,
-                            size: 80,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            _searchController.text.isEmpty
-                                ? 'No properties available'
-                                : 'No properties found',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          if (_searchController.text.isNotEmpty)
-                            TextButton(
-                              onPressed: () {
-                                _searchController.clear();
-                                _filterProperties('');
-                              },
-                              child: Text('Clear Search'),
-                            ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  // Display properties list
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      context.read<PropertyBloc>().add(LoadPropertyEvent());
-                    },
-                    child: ListView.builder(
-                      itemCount: _filteredProperties!.length,
-                      itemBuilder: (context, index) {
-                        return PropertyWidget(
-                          prop: _filteredProperties![index],
-                        );
-                      },
-                    ),
-                  );
-                } else if (state is PropertyError) {
+                if (state is PropertyError && _allProperties == null) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -184,12 +133,57 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
 
-                // Initial state
+                if (_filteredProperties != null && _filteredProperties!.isNotEmpty) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<PropertyBloc>().add(LoadPropertyEvent());
+                    },
+                    child: ListView.builder(
+                      itemCount: _filteredProperties!.length,
+                      itemBuilder: (context, index) {
+                        return PropertyWidget(
+                          prop: _filteredProperties![index],
+                        );
+                      },
+                    ),
+                  );
+                }
+
+                if (_allProperties != null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.home_outlined,
+                          size: 80,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          _searchController.text.isEmpty
+                              ? 'No properties available'
+                              : 'No properties found',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        if (_searchController.text.isNotEmpty)
+                          TextButton(
+                            onPressed: () {
+                              _searchController.clear();
+                              _filterProperties('');
+                            },
+                            child: Text('Clear Search'),
+                          ),
+                      ],
+                    ),
+                  );
+                }
+
                 return Center(
-                  child: Text(
-                    'Loading properties...',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
+                  child: CircularProgressIndicator(),
                 );
               },
             ),
@@ -199,3 +193,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

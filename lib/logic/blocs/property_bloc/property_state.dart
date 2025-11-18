@@ -74,3 +74,13 @@ class BookingError extends PropertyState{
   List<Object?> get props => [error];
 }
 
+
+class BookingCanceled extends PropertyState{
+  final String message;
+
+  BookingCanceled({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+

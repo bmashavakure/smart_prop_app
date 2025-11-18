@@ -54,7 +54,7 @@ class PropertyProvider{
             "Authorization": "Bearer ${token}"
           },
           body: {
-            'user_id': userId
+            'user_id': userId.toString()
           }
       );
 
@@ -109,7 +109,7 @@ class PropertyProvider{
             "Authorization": "Bearer ${token}"
           },
           body: {
-            'user_id': userID
+            'user_id': userID.toString()
           }
       );
 
@@ -117,6 +117,33 @@ class PropertyProvider{
         return getBookingsResponseFromJson(response.body);
       }else{
         return getBookingsResponseFromJson(response.body);
+      }
+
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
+
+  Future<BookingResponse> cancelBookingApiCall(int bookingID, String token) async{
+    try{
+      var url = Uri.parse("${Constants.apiBase}prop/cancel-booking");
+
+      final response = await http.post(
+          url,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer ${token}"
+          },
+          body: {
+            'booking_id': bookingID.toString()
+          }
+      );
+
+      if(response.statusCode == 200){
+        return bookingResponseFromJson(response.body);
+      }else{
+        return bookingResponseFromJson(response.body);
       }
 
     }catch(e){
