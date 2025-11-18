@@ -195,8 +195,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
         title: Row(
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 30),
-            SizedBox(width: 10),
-            Text('Booking Successful'),
           ],
         ),
         content: Text(message),
