@@ -111,6 +111,8 @@ class _PreferenceState extends State<Preference> {
         listener: (context, state) {
           if (state is PreferenceSubmitted) {
             SnackBarHelper.showSuccessSnackBar(state.message);
+            // Load properties after preferences are submitted
+            context.read<PropertyBloc>().add(LoadPropertyEvent());
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HomePage()));
           } else if (state is PropertyError) {
             SnackBarHelper.showErrorSnackBar(state.error);

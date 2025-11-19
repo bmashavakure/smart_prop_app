@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_prop_app/logic/blocs/property_bloc/property_bloc.dart';
+import 'package:smart_prop_app/logic/blocs/property_bloc/property_event.dart';
 import 'package:smart_prop_app/ui/home.dart';
 import 'package:smart_prop_app/ui/profile.dart';
 import 'package:smart_prop_app/ui/property/bookings.dart';
@@ -35,6 +38,7 @@ class _NavBarState extends State<NavBar>{
 
         switch(index){
           case 0:
+            context.read<PropertyBloc>().add(LoadPropertyEvent());
             Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()),);
             break;
           case 1:

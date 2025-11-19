@@ -63,8 +63,6 @@ class _RegisterState extends State<Register>{
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => Preference()));
           }else if(state is AuthError){
             SnackBarHelper.showErrorSnackBar(state.error);
-          }else{
-            SnackBarHelper.showErrorSnackBar("Something Went Wrong");
           }
         },
         builder: (context, state){

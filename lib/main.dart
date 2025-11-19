@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:smart_prop_app/core/theme/app_theme.dart';
 import 'package:smart_prop_app/logic/blocs/auth_bloc/auth_bloc.dart';
 import 'package:smart_prop_app/logic/blocs/property_bloc/property_bloc.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
               BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepo: context.read<AuthRepository>())),
               BlocProvider<PropertyBloc>(create: (context) => PropertyBloc(propertyRepo: context.read<PropertyRepository>())),
             ],
-            child:  MaterialApp(
+            child:  GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Smart Property App',
               darkTheme: AppTheme.darkTheme(),

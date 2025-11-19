@@ -28,7 +28,7 @@ class AuthProvider{
       }
 
     }catch(e){
-      throw Exception("Register User Failed");
+      throw Exception(e.toString());
     }
   }
 

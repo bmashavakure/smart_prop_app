@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<PropertyBloc>().add(LoadPropertyEvent());
+    // Properties are loaded from the calling page after preferences are set
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_prop_app/logic/blocs/auth_bloc/auth_event.dart';
+import 'package:smart_prop_app/logic/blocs/property_bloc/property_bloc.dart';
+import 'package:smart_prop_app/logic/blocs/property_bloc/property_event.dart';
 import 'package:smart_prop_app/ui/auth/register.dart';
 import 'package:smart_prop_app/ui/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +41,8 @@ class _LoginState extends State<Login>{
         listener: (context, state){
           if(state is AuthAuthenticated){
             SnackBarHelper.showSuccessSnackBar(state.message);
+            // Load properties when user logs in
+            context.read<PropertyBloc>().add(LoadPropertyEvent());
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HomePage()));
           }else if(state is AuthError){
             SnackBarHelper.showErrorSnackBar(state.error);
